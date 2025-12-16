@@ -95,11 +95,11 @@
             background: #232f3e;
             color: #fff;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             padding: 20px 15px;
             font-size: 14px;
-            flex-wrap: wrap;
         }
 
         footer a {
@@ -112,11 +112,13 @@
         }
 
         .footer-left {
-            flex: 1;
+            flex: 1 1 300px;
         }
 
         .footer-right {
+            flex: 0 1 200px;
             text-align: right;
+            margin-top: 0;
         }
 
         .footer-right a {
@@ -136,8 +138,16 @@
             .container {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
-            .footer-right {
-                text-align: left;
+        }
+
+        @media (max-width: 600px) {
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-left, .footer-right {
+                flex: 1 1 100%;
+                text-align: center;
                 margin-top: 10px;
             }
         }
@@ -188,8 +198,7 @@
         </div>
     </div>
 
-    <!-- ADD MORE BOOKS IN SAME FORMAT -->
-
+    <!-- Add more books below as needed -->
 </div>
 
 <footer>
