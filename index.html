@@ -229,12 +229,9 @@ function filterCategory(cat, btn){
    AMAZON APP DEEP LINK (SAFE)
 ================================ */
 function amazonLink(url){
-  if (/Android/i.test(navigator.userAgent)) {
-    return "https://www.amazon.in/gp/aw/d?redirect=true&url=" +
-           encodeURIComponent(url);
-  }
   return url;
 }
+
 </script>
 
 </body>
