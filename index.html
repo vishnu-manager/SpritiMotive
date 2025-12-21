@@ -2,54 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Best Book | Motivation & Study</title>
+<title>Books for Students | Motivation • Study • EAMCET</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="description" content="Best motivational and study books for students including Inter & EAMCET preparation.">
+<meta name="robots" content="index, follow">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,sans-serif;
-  background:#f4f6f8;
-  color:#111
-}
+body{margin:0;font-family:Inter,sans-serif;background:#f4f6f8;color:#111}
 
-/* HEADER */
 header{
-  background:#1f2937;
-  color:#fff;
-  padding:16px;
-  text-align:center;
-  position:sticky;
-  top:0;
-  z-index:10
+  background:#1f2937;color:#fff;
+  padding:16px;text-align:center;
+  position:sticky;top:0;z-index:10
 }
 header h1{margin:0;font-size:22px}
 header p{margin:6px 0;font-size:14px;opacity:.9}
 
-/* CONTROLS */
 .controls{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:10px
+  display:flex;gap:8px;flex-wrap:wrap;
+  justify-content:center;margin-top:10px
 }
-.controls button{
-  padding:7px 14px;
-  border:none;
+.controls button,select{
+  padding:7px 14px;border:none;
   border-radius:20px;
   background:#ff9900;
-  font-weight:600;
-  cursor:pointer
+  font-weight:600;cursor:pointer
 }
-.controls button.active{
-  background:#f59e0b
-}
+.controls button.active{background:#f59e0b}
 
-/* GRID */
 .container{
   max-width:1100px;
   margin:20px auto 40px;
@@ -59,67 +43,76 @@ header p{margin:6px 0;font-size:14px;opacity:.9}
   gap:14px
 }
 
-/* BOOK CARD */
+.section-title{
+  grid-column:1/-1;
+  font-size:18px;
+  margin:16px 0 6px;
+  color:#1f2937
+}
+
 .book{
-  background:#fff;
-  border-radius:10px;
+  background:#fff;border-radius:10px;
   padding:10px;
   box-shadow:0 4px 10px rgba(0,0,0,.1);
-  display:flex;
-  flex-direction:column;
+  display:flex;flex-direction:column;
   position:relative
 }
 
 .badge{
-  position:absolute;
-  top:8px;
-  left:8px;
-  background:#22c55e;
-  color:#fff;
-  font-size:11px;
-  padding:3px 8px;
+  position:absolute;top:8px;left:8px;
+  background:#22c55e;color:#fff;
+  font-size:11px;padding:3px 8px;
   border-radius:12px
 }
 
+.wish{
+  position:absolute;top:8px;right:8px;
+  font-size:18px;cursor:pointer;color:#ef4444
+}
+
 .book img{
-  width:100%;
-  height:180px;
+  width:100%;height:180px;
   object-fit:contain
 }
-.book h3{
-  font-size:14px;
-  margin:6px 0
-}
-.book p{
-  font-size:12px;
-  color:#555;
-  flex-grow:1
-}
-.stars{
-  color:#f59e0b;
-  font-size:13px;
-  margin-bottom:4px
-}
+.book h3{font-size:14px;margin:6px 0}
+.book p{font-size:12px;color:#555;flex-grow:1}
+.stars{color:#f59e0b;font-size:13px}
 
 .btn{
-  background:#ff9900;
-  color:#111;
-  text-decoration:none;
-  text-align:center;
-  padding:7px;
-  border-radius:6px;
-  font-weight:700;
+  background:#ff9900;color:#111;
+  text-decoration:none;text-align:center;
+  padding:7px;border-radius:6px;
+  font-weight:700;font-size:13px
+}
+
+footer{
+  background:#1f2937;color:#fff;
+  text-align:center;padding:14px;
   font-size:13px
 }
 
-/* FOOTER */
-footer{
-  background:#1f2937;
-  color:#fff;
+.youtube-box{
   text-align:center;
-  padding:14px;
-  font-size:13px
+  padding:16px;
+  background:#0f172a;
 }
+
+.youtube-box a{
+  display:inline-block;
+  background:#ff0000;
+  color:#fff;
+  text-decoration:none;
+  padding:12px 24px;
+  border-radius:30px;
+  font-weight:700;
+  font-size:14px;
+  box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+
+.youtube-box a:hover{
+  background:#e60000;
+}
+
 </style>
 </head>
 
@@ -132,106 +125,131 @@ footer{
 <div class="controls" id="categoryButtons">
   <button class="active" onclick="filterCategory('All',this)">All</button>
 </div>
+
+<div class="controls">
+  <select onchange="sortBooks(this.value)">
+    <option value="default">Sort</option>
+    <option value="rating">⭐ Top Rated</option>
+    <option value="badge">🔥 Bestseller</option>
+  </select>
+</div>
 </header>
 
 <div class="container" id="books"></div>
 
 <footer>
+<div class="youtube-box">
+  <a href="https://www.youtube.com/@spiritMotive-s63" target="_blank">
+    ▶ Subscribe on YouTube
+  </a>
+</div>
+
 <p>As an Amazon Associate, I earn from qualifying purchases.</p>
+<p>Views: <span id="views"></span> | Clicks: <span id="clicks"></span></p>
 </footer>
 
 <script>
-/* ==============================
-   GOOGLE SHEET CONFIG
-================================ */
-const SHEET_ID = "1DYs0Y_1YqvOK2LM-MNiD_xVwPOX1C6Mel3xY7ALxXXc";
-const URL = `https://opensheet.elk.sh/${SHEET_ID}/Sheet1`;
+const SHEET_ID="1DYs0Y_1YqvOK2LM-MNiD_xVwPOX1C6Mel3xY7ALxXXc";
+const URL=`https://opensheet.elk.sh/${SHEET_ID}/Sheet1`;
 
-let ALL_BOOKS = [];
+let ALL_BOOKS=[];
+let wishlist=JSON.parse(localStorage.getItem("wishlist")||"[]");
 
-/* ==============================
-   FETCH BOOKS
-================================ */
+/* Analytics */
+localStorage.setItem("views",(+localStorage.getItem("views")||0)+1);
+document.getElementById("views").innerText=localStorage.getItem("views");
+document.getElementById("clicks").innerText=localStorage.getItem("clicks")||0;
+
 fetch(URL)
-.then(res => res.json())
-.then(data => {
-  ALL_BOOKS = data;
+.then(res=>res.json())
+.then(data=>{
+  ALL_BOOKS=data;
   createCategoryButtons();
   renderBooks("All");
-})
-.catch(err => {
-  document.getElementById("books").innerHTML =
-    "<p style='grid-column:1/-1;text-align:center'>Failed to load books</p>";
 });
 
-/* ==============================
-   CREATE CATEGORY BUTTONS
-================================ */
 function createCategoryButtons(){
-  const wrap = document.getElementById("categoryButtons");
-
-  const categories = [...new Set(
-    ALL_BOOKS
-      .map(b => b.Category)
-      .filter(c => c && c.trim() !== "")
-  )];
-
-  categories.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.onclick = function(){
-      filterCategory(cat, btn);
-    };
+  const cats=[...new Set(ALL_BOOKS.map(b=>b.Category))];
+  const wrap=document.getElementById("categoryButtons");
+  cats.forEach(c=>{
+    const btn=document.createElement("button");
+    btn.innerText=c;
+    btn.onclick=()=>filterCategory(c,btn);
     wrap.appendChild(btn);
   });
 }
 
-/* ==============================
-   RENDER BOOKS
-================================ */
-function renderBooks(category){
-  const box = document.getElementById("books");
-  box.innerHTML = "";
+function renderBooks(cat){
+  const box=document.getElementById("books");
+  box.innerHTML="";
+  const groups={};
 
   ALL_BOOKS
-  .filter(b => category === "All" || b.Category === category)
-  .forEach(b => {
-    const div = document.createElement("div");
-    div.className = "book";
-
-    div.innerHTML = `
-      ${b.Badge ? `<span class="badge">${b.Badge}</span>` : ""}
-      <img src="${b.Image}" alt="${b.Title}">
-      <h3>${b.Title}</h3>
-      <div class="stars">${"★".repeat(Math.round(b.Rating || 4))}</div>
-      <p>${b.Description || ""}</p>
-      <a class="btn" href="${amazonLink(b.Link)}" target="_blank" rel="noopener">
-        Buy on Amazon
-      </a>
-    `;
-
-    box.appendChild(div);
+  .filter(b=>cat==="All"||b.Category===cat)
+  .forEach(b=>{
+    groups[b.Category]=groups[b.Category]||[];
+    groups[b.Category].push(b);
   });
+
+  for(let c in groups){
+    box.innerHTML+=`<div class="section-title">${c} Books</div>`;
+    groups[c].forEach(b=>renderOne(b));
+  }
 }
 
-/* ==============================
-   FILTER CATEGORY
-================================ */
-function filterCategory(cat, btn){
-  document.querySelectorAll(".controls button")
-    .forEach(b => b.classList.remove("active"));
+function renderOne(b){
+  const box=document.getElementById("books");
+  const div=document.createElement("div");
+  const wished=wishlist.includes(b.Title);
 
+  div.className="book";
+  div.innerHTML=`
+    ${b.Badge?`<span class="badge">${b.Badge}</span>`:""}
+    <span class="wish" onclick="toggleWish('${b.Title}',this)">${wished?"♥":"♡"}</span>
+    <img src="${b.Image}">
+    <h3>${b.Title}</h3>
+    <div class="stars">${"★".repeat(Math.round(b.Rating||4))}</div>
+    <p>${b.Description||""}</p>
+    <a class="btn" href="${b.Link}" target="_blank" onclick="trackClick()">Buy on Amazon</a>
+  `;
+  box.appendChild(div);
+}
+
+function filterCategory(cat,btn){
+  document.querySelectorAll(".controls button")
+    .forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
   renderBooks(cat);
 }
 
-/* ==============================
-   AMAZON APP DEEP LINK (SAFE)
-================================ */
-function amazonLink(url){
-  return url;
+function sortBooks(type){
+  let sorted=[...ALL_BOOKS];
+  if(type==="rating") sorted.sort((a,b)=>(b.Rating||0)-(a.Rating||0));
+  if(type==="badge") sorted.sort((a,b)=>(b.Badge?1:0)-(a.Badge?1:0));
+  renderCustom(sorted);
 }
 
+function renderCustom(list){
+  const box=document.getElementById("books");
+  box.innerHTML="";
+  list.forEach(b=>renderOne(b));
+}
+
+function toggleWish(title,el){
+  if(wishlist.includes(title)){
+    wishlist=wishlist.filter(t=>t!==title);
+    el.innerText="♡";
+  }else{
+    wishlist.push(title);
+    el.innerText="♥";
+  }
+  localStorage.setItem("wishlist",JSON.stringify(wishlist));
+}
+
+function trackClick(){
+  localStorage.setItem("clicks",(+localStorage.getItem("clicks")||0)+1);
+  document.getElementById("clicks").innerText=localStorage.getItem("clicks");
+}
 </script>
 
 </body>
